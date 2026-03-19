@@ -68,7 +68,7 @@ jobs:
         continue-on-error: true
         run: |
           brew update || :
-          brew install --formula bash curl make texinfo gzip xz dos2unix libtool cmake help2man nasm s-lang ccache
+          brew install --formula bash curl make texinfo gzip xz dos2unix libtool cmake help2man nasm s-lang ccache gnu-sed
 
       - name: Setup environment (ubuntu)
         if: contains(matrix.os, 'ubuntu')
@@ -85,6 +85,7 @@ jobs:
           mkdir -p $HOME/.ccache
           echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
           echo "$(brew --prefix)/opt/ccache/libexec" >> $GITHUB_PATH
+          echo "$(brew --prefix gnu-sed)/libexec/gnubin" >> $GITHUB_PATH
           echo CFLAGS="$CFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags -Wno-implicit-function-declaration -fcommon" >> $GITHUB_ENV
           echo CXXFLAGS="$CXXFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags" >> $GITHUB_ENV
 
