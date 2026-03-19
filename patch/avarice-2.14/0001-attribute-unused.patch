@@ -34,7 +34,7 @@ diff --git a/src/jtag3io.cc b/src/jtag3io.cc
 index 3600fc4..8b29227 100644
 --- a/src/jtag3io.cc
 +++ b/src/jtag3io.cc
-@@ -24,6 +24,7 @@
+@@ -24,7 +24,8 @@
  #include <stdlib.h>
  #include <unistd.h>
  #include <sys/stat.h>
