@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Copilot <copilot@example.com>
+Date: Thu, 20 Mar 2026 00:00:00 +0000
+Subject: [PATCH] avarice: provide __unused fallback macro
+
+Ensure builds succeed even when system headers do not define __unused by
+providing a local definition that maps to the GNU-style unused attribute.
+
+---
+ src/avarice.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/avarice.h b/src/avarice.h
+index 9fd3bee..be5d01f 100644
+--- a/src/avarice.h
++++ b/src/avarice.h
+@@ -22,6 +22,10 @@
+ 
+ #include <stdarg.h>
+ 
++#ifndef __unused
++#define __unused __attribute__((unused))
++#endif
++
+ #include "autoconf.h"
+ 
+ typedef unsigned char uchar;
