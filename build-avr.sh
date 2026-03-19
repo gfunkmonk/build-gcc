@@ -56,7 +56,7 @@ if [ ! -z ${AVARICE_VERSION} ]; then
   untar ${AVARICE_ARCHIVE}
   cd avarice-${AVARICE_VERSION}
   if compgen -G "${BASE}/patch/avarice-${AVARICE_VERSION}/*" > /dev/null; then
-    for p in ${BASE}/patch/avarice-${AVARICE_VERSION}/*; do
+    for p in "${BASE}/patch/avarice-${AVARICE_VERSION}"/*; do
       patch -p1 -u -N --batch -i "$p" || exit 1
     done
   fi
