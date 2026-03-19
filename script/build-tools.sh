@@ -53,7 +53,14 @@ build_lib()
   fi
 }
 
+TEMP_CPPFLAGS="$CPPFLAGS"
+# GMP's printf/ subdirectory uses <obstack.h>, which macOS does not provide.
+# Supply our bundled copy via CPPFLAGS on systems that lack a system obstack.h.
+if ! echo '#include <obstack.h>' | ${CC} -x c -std=gnu17 -E - -o /dev/null 2>/dev/null; then
+  export CPPFLAGS="$CPPFLAGS -I${BASE}/lib"
+fi
 CFLAGS+=" -std=gnu17" build_lib gmp
+CPPFLAGS="$TEMP_CPPFLAGS"
 build_lib mpfr --with-gmp="$TMPINST"
 build_lib mpc --with-gmp="$TMPINST" --with-mpfr="$TMPINST"
 build_lib isl --with-gmp=system --with-gmp-prefix="$TMPINST"

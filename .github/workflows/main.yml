@@ -84,6 +84,7 @@ jobs:
         run: |
           mkdir -p $HOME/.ccache
           echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
+          echo "$(brew --prefix)/bin" >> $GITHUB_PATH
           echo "$(brew --prefix)/opt/ccache/libexec" >> $GITHUB_PATH
           echo "$(brew --prefix gnu-sed)/libexec/gnubin" >> $GITHUB_PATH
           echo CFLAGS="$CFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags -Wno-implicit-function-declaration -fcommon" >> $GITHUB_ENV
