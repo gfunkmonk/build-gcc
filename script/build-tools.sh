@@ -7,7 +7,13 @@ if [ ! -z "${SED_VERSION}" ]; then
     untar "$SED_ARCHIVE" || exit 1
     cd "sed-${SED_VERSION}/"
     TEMP_CFLAGS="$CFLAGS"
+    TEMP_CPPFLAGS="$CPPFLAGS"
     export CFLAGS="${CFLAGS//-w}"   # configure fails if warnings are disabled.
+    # sed uses a non-recursive make, so lib/ files are compiled from the top
+    # directory.  The gnulib-provided obstack.h lives in lib/ and won't be
+    # found via the default include path on systems (e.g. macOS) that lack a
+    # system obstack.h.  Add lib/ explicitly so <obstack.h> resolves correctly.
+    export CPPFLAGS="$CPPFLAGS -I$(pwd)/lib"
     # Prevent gnulib from falsely detecting MSVC-specific types on non-Windows
     # hosts (e.g. macOS whose SDK exposes _invalid_parameter_handler).
     gl_cv_type_invalid_parameter_handler=no \
@@ -15,6 +21,7 @@ if [ ! -z "${SED_VERSION}" ]; then
     ${MAKE_J} || exit 1
     ${MAKE_J} DESTDIR= install || exit 1
     CFLAGS="$TEMP_CFLAGS"
+    CPPFLAGS="$TEMP_CPPFLAGS"
     echo ${SED_VERSION} > "${TMPINST}/sed-version"
   fi
 fi
