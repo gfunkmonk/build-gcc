@@ -1,4 +1,4 @@
-name: Test builds
+name: Bitch Macs
 
 on:
   pull_request:
@@ -7,27 +7,12 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
+        os: macos-latest
         env:
-          -
-            TARGET: i386-pc-msdosdjgpp
-            PACKAGES: binutils gcc djgpp-2.05 watt32
-          -
-            TARGET: i386-pc-msdosdjgpp
-            PACKAGES: binutils gcc djgpp-cvs watt32
-          -
-            TARGET: i386-pc-msdosdjgpp
-            PACKAGES: gdb
-          -
-            TARGET: arm-eabi
-            PACKAGES: binutils gcc newlib
-          -
-            TARGET: arm-eabi
-            PACKAGES: gdb
           -
             TARGET: avr
             PACKAGES: binutils gcc avr-libc
@@ -42,42 +27,22 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Clear brew package cache
-        if: contains(matrix.os, 'macos')
         run: |
           rm -rf $(brew --cache)
 
       - name: Cache brew package cache
         uses: actions/cache@v4
-        if: contains(matrix.os, 'macos')
         with:
           path: ~/Library/Caches/Homebrew
           key: testbuild-brew-cache-${{ github.sha }}
           restore-keys: |
             testbuild-brew-cache-
 
-      - name: Install dependencies (ubuntu)
-        if: contains(matrix.os, 'ubuntu')
-        continue-on-error: true
-        run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test || :
-          sudo apt-get update || :
-          sudo apt-get install bison flex curl make texinfo zlib1g-dev tar bzip2 gzip xz-utils unzip dos2unix libtool-bin gcc-13 g++-13 cmake help2man python3-dev nasm libslang2-dev ccache
-
       - name: Install dependencies (macos)
-        if: contains(matrix.os, 'macos')
         continue-on-error: true
         run: |
           brew update || :
           brew install --formula bash curl make texinfo gzip xz dos2unix libtool cmake help2man nasm s-lang ccache gnu-sed
-
-      - name: Setup environment (ubuntu)
-        if: contains(matrix.os, 'ubuntu')
-        run: |
-          echo "CC=gcc-13" >> $GITHUB_ENV
-          echo "CXX=g++-13" >> $GITHUB_ENV
-          mkdir -p $HOME/.ccache
-          echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
-          echo "/usr/lib/ccache" >> $GITHUB_PATH
 
       - name: Setup environment (macos)
         if: contains(matrix.os, 'macos')
@@ -93,17 +58,17 @@ jobs:
         uses: actions/cache@v4
         with:
           path: download
-          key: testbuild-sources-${{ matrix.os }}-${{ matrix.env.TARGET }}-${{ matrix.env.PACKAGES }}-${{ github.sha }}
+          key: testbuild-sources-macOS-${{ matrix.env.TARGET }}-${{ matrix.env.PACKAGES }}-${{ github.sha }}
           restore-keys: |
-            testbuild-sources-${{ matrix.os }}-${{ matrix.env.TARGET }}-${{ matrix.env.PACKAGES }}-
+            testbuild-sources-macOS-${{ matrix.env.TARGET }}-${{ matrix.env.PACKAGES }}-
 
       - name: Cache ccache
         uses: actions/cache@v4
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: testbuild-ccache-${{ matrix.os }}-${{ matrix.env.TARGET }}-${{ matrix.env.PACKAGES }}-${{ github.sha }}
+          key: testbuild-ccache-macOS-${{ matrix.env.TARGET }}-${{ matrix.env.PACKAGES }}-${{ github.sha }}
           restore-keys: |
-            testbuild-ccache-${{ matrix.os }}-${{ matrix.env.TARGET }}-${{ matrix.env.PACKAGES }}-
+            testbuild-ccache-macOS-${{ matrix.env.TARGET }}-${{ matrix.env.PACKAGES }}-
 
       - name: Download sources
         env:
