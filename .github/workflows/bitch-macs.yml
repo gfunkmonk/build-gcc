@@ -11,7 +11,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: macos-latest
         env:
           -
             TARGET: avr
@@ -45,7 +44,6 @@ jobs:
           brew install --formula bash curl make texinfo gzip xz dos2unix libtool cmake help2man nasm s-lang ccache gnu-sed
 
       - name: Setup environment (macos)
-        if: contains(matrix.os, 'macos')
         run: |
           mkdir -p $HOME/.ccache
           echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
