@@ -1,0 +1,22 @@
+Replace deprecated sprintf with snprintf in gensupport.cc.
+On macOS with Xcode 16.4, sprintf is deprecated and causes build errors.
+--- a/gcc/gensupport.cc
++++ b/gcc/gensupport.cc
+@@ -2317,7 +2317,7 @@ process_one_cond_exec (class queue_elem *ce_elem)
+       /* Construct a new pattern for the new insn.  */
+       insn = copy_rtx (insn_elem->data);
+       new_name = XNEWVAR (char, strlen XSTR (insn_elem->data, 0) + 4);
+-      sprintf (new_name, "*p %s", XSTR (insn_elem->data, 0));
++      snprintf (new_name, strlen XSTR (insn_elem->data, 0) + 4, "*p %s", XSTR (insn_elem->data, 0));
+       XSTR (insn, 0) = new_name;
+       pattern = rtx_alloc (COND_EXEC);
+       XEXP (pattern, 0) = pred;
+@@ -3627,7 +3627,7 @@ record_insn_name (int code, const char *name)
+   if (!name || name[0] == '\0')
+     {
+       new_name = XNEWVAR (char, strlen (last_real_name) + 10);
+-      sprintf (new_name, "%s+%d", last_real_name, code - last_real_code);
++      snprintf (new_name, strlen (last_real_name) + 10, "%s+%d", last_real_name, code - last_real_code);
+     }
+   else
+     {

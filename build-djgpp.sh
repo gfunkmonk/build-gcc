@@ -211,6 +211,9 @@ if [ ! -z ${GCC_VERSION} ]; then
 
     # apply extra patches if necessary
     cat ${BASE}/patch/djgpp-gcc-${GCC_VERSION}/* | patch -p1 -u || exit 1
+    if ls ${BASE}/patch/gcc-${GCC_VERSION}/* > /dev/null 2>&1; then
+      cat ${BASE}/patch/gcc-${GCC_VERSION}/* | patch -p1 -u || exit 1
+    fi
 
     touch ${BUILDDIR}/gcc-unpacked
   else

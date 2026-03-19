@@ -1,8 +1,7 @@
 name: Deploy PPA
 
 on:
-  push:
-    branches: djgpp-ppa
+    workflow_dispatch:
 
 jobs:
   check:

@@ -1,9 +1,9 @@
 name: Test builds
 
 on:
-  push:
-    branches-ignore: djgpp-ppa
   pull_request:
+
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
+        os: [ ubuntu-latest, macos-14 ]
         env:
           -
             TARGET: i386-pc-msdosdjgpp
@@ -85,6 +85,8 @@ jobs:
           mkdir -p $HOME/.ccache
           echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
           echo "$(brew --prefix)/opt/ccache/libexec" >> $GITHUB_PATH
+          echo CFLAGS="$CFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags -Wno-implicit-function-declaration" >> $GITHUB_ENV
+          echo CXXFLAGS="$CXXFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags" >> $GITHUB_ENV
 
       - name: Cache sources
         uses: actions/cache@v4

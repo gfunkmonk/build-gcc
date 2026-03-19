@@ -40,6 +40,9 @@ if [ ! -z ${SIMULAVR_VERSION} ]; then
   sed -i "s@-DCMAKE_INSTALL_PREFIX=@-DCMAKE_INSTALL_PREFIX=${DST} #@" Makefile
   sed -i 's/@make/$(MAKE)/g' Makefile
   sed -i 's@/bin/@@' cmake/GetGitInfo.cmake
+  # Remove elfio's plain-text 'version' file to prevent the C++20 <version>
+  # header from being shadowed when include/elfio/ is in the include path.
+  rm -f include/elfio/version
   ${MAKE_J} build || exit 1
   ${MAKE_J} doc || exit 1
   [ ! -z $MAKE_CHECK ] && ${MAKE_J} -s check | tee ${BASE}/tests/simulavr.log

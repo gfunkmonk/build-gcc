@@ -24,6 +24,9 @@ if [ ! -z ${GCC_VERSION} ]; then
     untar ${GCC_ARCHIVE}
 
     cd gcc-${GCC_VERSION} || exit 1
+    if ls ${BASE}/patch/gcc-${GCC_VERSION}/* > /dev/null 2>&1; then
+      cat ${BASE}/patch/gcc-${GCC_VERSION}/* | patch -p1 -u || exit 1
+    fi
     touch gcc-unpacked
     cd ..
   fi
