@@ -8,6 +8,9 @@ if [ ! -z "${SED_VERSION}" ]; then
     cd "sed-${SED_VERSION}/"
     TEMP_CFLAGS="$CFLAGS"
     export CFLAGS="${CFLAGS//-w}"   # configure fails if warnings are disabled.
+    # Prevent gnulib from falsely detecting MSVC-specific types on non-Windows
+    # hosts (e.g. macOS whose SDK exposes _invalid_parameter_handler).
+    gl_cv_type_invalid_parameter_handler=no \
     ./configure --prefix="$TMPINST" ${BUILD_FLAG} ${HOST_FLAG} || exit 1
     ${MAKE_J} || exit 1
     ${MAKE_J} DESTDIR= install || exit 1
