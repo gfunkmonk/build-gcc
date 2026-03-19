@@ -41,7 +41,7 @@ jobs:
         continue-on-error: true
         run: |
           brew update || :
-          brew install --formula bash curl make texinfo gzip xz dos2unix libtool cmake help2man nasm s-lang ccache gnu-sed libobstack
+          brew install --formula bash curl make texinfo gzip xz dos2unix libtool cmake help2man nasm s-lang ccache gnu-sed gawk gnutls coreutils
 
       - name: Setup environment (macos)
         run: |
