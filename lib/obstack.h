@@ -135,6 +135,13 @@
 
 #include <string.h>
 
+#ifndef _GL_ATTRIBUTE_PURE
+# if defined __GNUC__ || defined __clang__
+#  define _GL_ATTRIBUTE_PURE __attribute__ ((__pure__))
+# else
+#  define _GL_ATTRIBUTE_PURE /* empty */
+# endif
+#endif
 #ifndef __attribute_pure__
 # define __attribute_pure__ _GL_ATTRIBUTE_PURE
 #endif
