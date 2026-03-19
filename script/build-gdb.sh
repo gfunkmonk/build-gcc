@@ -6,7 +6,9 @@ if [ ! -z ${GDB_VERSION} ]; then
     untar ${GDB_ARCHIVE} || exit 1
 
     cd gdb-${GDB_VERSION}/ || exit 1
-    cat ${BASE}/patch/gdb-${GDB_VERSION}/* | patch -p1 -u || exit 1
+    if compgen -G "${BASE}/patch/gdb-${GDB_VERSION}/*" > /dev/null 2>&1; then
+      cat ${BASE}/patch/gdb-${GDB_VERSION}/* | patch -p1 -u || exit 1
+    fi
     touch gdb-unpacked
     cd ..
   fi
