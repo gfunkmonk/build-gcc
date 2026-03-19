@@ -519,4 +519,28 @@ extern int obstack_exit_failure;
 }       /* C++ */
 #endif
 
+/* Provide obstack_vprintf for platforms where glibc's <stdio.h> does not
+   declare it (e.g. macOS).  On glibc systems this header is not used
+   (build-tools.sh keeps -I${BASE}/lib out of CPPFLAGS when the system
+   already has <obstack.h>), so the __GLIBC__ guard is belt-and-suspenders. */
+#if !defined __GLIBC__ && !defined _OBSTACK_VPRINTF_DECLARED
+# define _OBSTACK_VPRINTF_DECLARED 1
+# include <stdarg.h>
+# include <stdio.h>
+# include <stdlib.h>
+static __attribute__ ((unused)) int
+obstack_vprintf (struct obstack *__restrict __ob,
+                 const char *__restrict __fmt, va_list __ap)
+{
+  char *__buf = NULL;
+  int __n = vasprintf (&__buf, __fmt, __ap);
+  if (__n >= 0)
+    {
+      obstack_grow (__ob, __buf, __n);
+      free (__buf);
+    }
+  return __n;
+}
+#endif /* !__GLIBC__ && !_OBSTACK_VPRINTF_DECLARED */
+
 #endif /* obstack.h */
