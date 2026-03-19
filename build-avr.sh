@@ -55,7 +55,11 @@ if [ ! -z ${AVARICE_VERSION} ]; then
   echo "Building AVaRICE"
   untar ${AVARICE_ARCHIVE}
   cd avarice-${AVARICE_VERSION}
-  cat ${BASE}/patch/avarice-${AVARICE_VERSION}/* | patch -p1 -u || exit 1
+  if compgen -G "${BASE}/patch/avarice-${AVARICE_VERSION}/*" > /dev/null; then
+    for p in "${BASE}/patch/avarice-${AVARICE_VERSION}"/*; do
+      patch -p1 -u -N -i "$p" || exit 1
+    done
+  fi
   mkdir -p build-avr/
   cd build-avr/ || exit 1
   rm -rf *

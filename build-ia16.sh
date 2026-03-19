@@ -5,6 +5,13 @@ source script/init.sh
 
 TARGET="ia16-elf"
 
+# GCC's code generators can reference weak globals that are not provided
+# by the host toolchain when linking on macOS (Darwin).  Allow undefined
+# symbols during host links to match the behaviour on other platforms.
+if [ "$(uname)" = "Darwin" ]; then
+  export LDFLAGS="$LDFLAGS -Wl,-undefined,dynamic_lookup"
+fi
+
 prepend BINUTILS_CONFIGURE_OPTIONS "--disable-werror
                                     --disable-nls
                                     --disable-gdb
