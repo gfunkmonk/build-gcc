@@ -31,10 +31,19 @@ index 8534701..c5a8ac3 100644
    struct pollfd fds[2];
  
 diff --git a/src/jtag3io.cc b/src/jtag3io.cc
-index 3600fc4..8b29227 100644
+ index 3600fc4..8b29227 100644
 --- a/src/jtag3io.cc
 +++ b/src/jtag3io.cc
-@@ -350,12 +350,12 @@ void jtag3::doSimpleJtagCommand(uchar command, const char *name, uchar scope)
+@@ -24,6 +24,7 @@
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <sys/stat.h>
+ #include <sys/time.h>
++#include <strings.h>
+ #include <termios.h>
+ #include <fcntl.h>
+ #include <signal.h>
+@@ -350,12 +351,12 @@ void jtag3::doSimpleJtagCommand(uchar command, const char *name, uchar scope)
      throw jtag_exception("doSimpleJtagCommand(): too many failures");
  }
  

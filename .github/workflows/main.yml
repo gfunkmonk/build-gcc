@@ -85,7 +85,7 @@ jobs:
           mkdir -p $HOME/.ccache
           echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
           echo "$(brew --prefix)/opt/ccache/libexec" >> $GITHUB_PATH
-          echo CFLAGS="$CFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags -Wno-implicit-function-declaration" >> $GITHUB_ENV
+          echo CFLAGS="$CFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags -Wno-implicit-function-declaration -fcommon" >> $GITHUB_ENV
           echo CXXFLAGS="$CXXFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags" >> $GITHUB_ENV
 
       - name: Cache sources
