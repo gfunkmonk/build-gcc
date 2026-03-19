@@ -57,7 +57,7 @@ if [ ! -z ${AVARICE_VERSION} ]; then
   cd avarice-${AVARICE_VERSION}
   if compgen -G "${BASE}/patch/avarice-${AVARICE_VERSION}/*" > /dev/null; then
     for p in "${BASE}/patch/avarice-${AVARICE_VERSION}"/*; do
-      patch -p1 -u -N --batch -i "$p" || exit 1
+      patch -p1 -u -N -i "$p" || exit 1
     done
   fi
   mkdir -p build-avr/
