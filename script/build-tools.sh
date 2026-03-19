@@ -8,7 +8,7 @@ if [ ! -z "${SED_VERSION}" ]; then
     cd "sed-${SED_VERSION}/"
     TEMP_CFLAGS="$CFLAGS"
     export CFLAGS="${CFLAGS//-w}"   # configure fails if warnings are disabled.
-    ./configure --prefix="$TMPINST" || exit 1
+    ./configure --prefix="$TMPINST" ${BUILD_FLAG} ${HOST_FLAG} || exit 1
     ${MAKE_J} || exit 1
     ${MAKE_J} DESTDIR= install || exit 1
     CFLAGS="$TEMP_CFLAGS"
