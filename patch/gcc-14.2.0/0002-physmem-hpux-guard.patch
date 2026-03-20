@@ -1,0 +1,27 @@
+Guard HP-UX pstat code in libiberty/physmem.c with __hpux check.
+On macOS, HAVE_PSTAT_GETSTATIC and HAVE_PSTAT_GETDYNAMIC may be
+defined by configure, but the required struct pst_static and
+struct pst_dynamic types are only available on HP-UX via
+<sys/pstat.h>.  Wrapping these blocks with `defined __hpux`
+prevents incomplete-type and undeclared-function errors when
+building on macOS.
+--- a/libiberty/physmem.c
++++ b/libiberty/physmem.c
+@@ -91,7 +91,7 @@
+   }
+ #endif
+ 
+-#if HAVE_PSTAT_GETSTATIC
++#if defined __hpux && HAVE_PSTAT_GETSTATIC
+   { /* This works on hpux11.  */
+     struct pst_static pss;
+     if (0 <= pstat_getstatic (&pss, sizeof pss, 1, 0))
+@@ -195,7 +195,7 @@
+   }
+ #endif
+ 
+-#if HAVE_PSTAT_GETSTATIC && HAVE_PSTAT_GETDYNAMIC
++#if defined __hpux && HAVE_PSTAT_GETSTATIC && HAVE_PSTAT_GETDYNAMIC
+   { /* This works on hpux11.  */
+     struct pst_static pss;
+     struct pst_dynamic psd;
