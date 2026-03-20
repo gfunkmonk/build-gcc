@@ -57,6 +57,11 @@ fi
 if [ ! -z ${GCC_VERSION} ]; then
   cd ${BASE}/build/gcc-ia16/
   patch -p1 -u < ../../patch/patch-gcc-ia16.txt || exit 1
+  if compgen -G "${BASE}/patch/gcc-ia16/*.patch" > /dev/null; then
+    for p in "${BASE}/patch/gcc-ia16"/*.patch; do
+      patch -t -p1 -u -N -i "$p" || exit 1
+    done
+  fi
   cd -
 fi
 

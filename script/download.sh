@@ -79,6 +79,7 @@ download_git()
   cd $repo/ || exit 1
   if [ -z ${NO_GIT_RESET} ]; then
     git reset --hard HEAD
+    git clean -fd
     git checkout $2
     if [ -z ${NO_DOWNLOAD} ]; then
       git fetch origin
