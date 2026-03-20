@@ -87,7 +87,7 @@ jobs:
           echo "$(brew --prefix)/bin" >> $GITHUB_PATH
           echo "$(brew --prefix)/opt/ccache/libexec" >> $GITHUB_PATH
           echo "$(brew --prefix gnu-sed)/libexec/gnubin" >> $GITHUB_PATH
-          echo CFLAGS="$CFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags -Wno-implicit-function-declaration -Wno-error=int-conversion -fcommon" >> $GITHUB_ENV
+          echo CFLAGS="$CFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags -Wno-implicit-function-declaration -fcommon" >> $GITHUB_ENV
           echo CXXFLAGS="$CXXFLAGS -Wno-error=deprecated-declarations -Wno-error=mismatched-tags" >> $GITHUB_ENV
 
       - name: Cache sources

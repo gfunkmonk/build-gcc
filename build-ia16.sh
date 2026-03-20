@@ -49,6 +49,11 @@ source ${BASE}/script/build-tools.sh
 cd ${BASE}/build/ || exit 1
 if [ "$BINUTILS_VERSION" = "ia16" ]; then
   cd binutils-${BINUTILS_VERSION} || exit 1
+  if compgen -G "${BASE}/patch/binutils-ia16/*.patch" > /dev/null; then
+    for p in "${BASE}/patch/binutils-ia16"/*.patch; do
+      patch -t -p1 -u -N -i "$p" || exit 1
+    done
+  fi
   source ${BASE}/script/build-binutils.sh
 else
   source ${BASE}/script/unpack-build-binutils.sh
