@@ -1,0 +1,18 @@
+Add explicit declaration for getexecname in libbacktrace/fileline.c.
+On macOS, getexecname() exists as a symbol but is not declared in any
+public header.  When HAVE_GETEXECNAME is defined by configure, the call
+site lacks a visible declaration, causing clang to infer an implicit
+int return type and then fail with -Wint-conversion when assigning to
+const char *.  Add an explicit extern declaration in the #else branch
+so the function is properly typed on all platforms.
+--- a/libbacktrace/fileline.c
++++ b/libbacktrace/fileline.c
+@@ -52,6 +52,8 @@
+ 
+ #ifndef HAVE_GETEXECNAME
+ #define getexecname() NULL
++#else
++extern const char *getexecname (void);
+ #endif
+ 
+ #if !defined (HAVE_KERN_PROC_ARGS) && !defined (HAVE_KERN_PROC)
