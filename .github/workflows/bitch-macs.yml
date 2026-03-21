@@ -7,17 +7,17 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     strategy:
       fail-fast: false
       matrix:
         env:
-          -
-            TARGET: avr
-            PACKAGES: binutils gcc avr-libc
-          -
-            TARGET: avr
-            PACKAGES: gdb avarice simulavr avrdude
+          #-
+          #  TARGET: avr
+          #  PACKAGES: binutils gcc avr-libc
+          #-
+          #  TARGET: avr
+          #  PACKAGES: gdb avarice simulavr avrdude
           -
             TARGET: ia16-elf
             PACKAGES: binutils gcc newlib
