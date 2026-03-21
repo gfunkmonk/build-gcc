@@ -1,0 +1,18 @@
+Guard libiberty/pex-unix.c spawn block with defined(_P_NOWAITO).
+On macOS, configure detects spawnve and spawnvpe but _P_NOWAITO is
+only available on Windows/Cygwin via <process.h>.  Without the guard,
+the spawn implementation block is compiled on macOS but fails because
+_P_NOWAITO is undeclared.  Adding defined(_P_NOWAITO) to the #if
+condition causes macOS builds to skip the Cygwin-only spawn path and
+fall through to the standard vfork/fork implementation instead.
+--- a/libiberty/pex-unix.c
++++ b/libiberty/pex-unix.c
+@@ -366,7 +366,7 @@ pex_unix_close (struct pex_obj *obj ATTRIBUTE_UNUSED, int fd)
+ 
+ /* Execute a child.  */
+ 
+-#if defined(HAVE_SPAWNVE) && defined(HAVE_SPAWNVPE)
++#if defined(HAVE_SPAWNVE) && defined(HAVE_SPAWNVPE) && defined(_P_NOWAITO)
+ /* Implementation of pex->exec_child using the Cygwin spawn operation.  */
+ 
+ /* Subroutine of pex_unix_exec_child.  Move OLD_FD to a new file descriptor
