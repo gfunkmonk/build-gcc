@@ -9,6 +9,7 @@ strip_whitespace BINUTILS_CONFIGURE_OPTIONS
 
 if [ ! -e configure-prefix ] || [ ! "`cat configure-prefix`" = "${BINUTILS_CONFIGURE_OPTIONS}" ]; then
   rm -rf *
+  chmod 777 configure
   ../configure ${BINUTILS_CONFIGURE_OPTIONS} || exit 1
   echo ${BINUTILS_CONFIGURE_OPTIONS} > configure-prefix
 else
