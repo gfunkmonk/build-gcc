@@ -1,2 +1,2 @@
 BINUTILS_VERSION=ia16
-BINUTILS_GIT="https://github.com/tkchia/binutils-ia16.git::binutils-ia16-tkchia"
+BINUTILS_GIT="https://github.com/Azhagen/binutils-ia16.git::binutils-ia16-2_43_1"
