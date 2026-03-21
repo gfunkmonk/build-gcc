@@ -7,4 +7,4 @@ GCC_CONFIGURE_OPTIONS="--disable-plugin
                        --disable-libstdcxx-dual-abi
                        ${GCC_CONFIGURE_OPTIONS}"
 
-source lib/isl-0.15
+source lib/isl-0.24
